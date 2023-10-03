@@ -7,6 +7,7 @@ setup(
     py_modules=['testprog', 'app', 'sort'],
     packages=find_packages(where="guiapp"),
     install_requires=[
+        'PyQt6',
     ],
     setup_requires=[
         'pytest-runner',
