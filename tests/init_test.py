@@ -1,11 +1,9 @@
 
 from pytestqt.qt_compat import qt_api
 from guiapp.app import MainWindow
-from guiapp.testprog import Application
 
 def test_first(qtbot):
-    app = Application([])
-    window = MainWindow(app)
+    window = MainWindow()
     qtbot.addWidget(window)
 
     window.input.setText('1 2 3')
@@ -15,8 +13,7 @@ def test_first(qtbot):
     assert window.label.text() == "1, 2, 3"
 
 def test_second(qtbot):
-    app = Application([])
-    window = MainWindow(app)
+    window = MainWindow()
     qtbot.addWidget(window)
 
     window.input.setText('1 6 3 8')
@@ -26,8 +23,7 @@ def test_second(qtbot):
     assert window.label.text() == "1, 3, 6, 8"
 
 def test_third(qtbot):
-    app = Application([])
-    window = MainWindow(app)
+    window = MainWindow()
     qtbot.addWidget(window)
 
     window.input.setText('')
