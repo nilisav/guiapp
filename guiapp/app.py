@@ -1,4 +1,4 @@
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QPushButton, QLabel, QLineEdit, QWidget, QHBoxLayout, QVBoxLayout, QMainWindow
 
 from sort import sortfunc
@@ -9,20 +9,13 @@ class MyInput(QLineEdit):
     pass
 
 class ExitButton(QPushButton):
-    myclicked = pyqtSignal(int)
-
-    def __init__(self, *args, **kwargs):
-        QPushButton.__init__(self, *args, **kwargs)
-        self.clicked.connect(self._activate_myclick)
-
-    def _activate_myclick(self):
-        self.myclicked.emit(1)
+    pass
 
 class MainWindow(QMainWindow):
-    def __init__(self, app, *args, **kwargs):
-        QMainWindow.__init__(self, *args, **kwargs)
+    exit_this = pyqtSignal(int)
 
-        self.app = app
+    def __init__(self, *args, **kwargs):
+        QMainWindow.__init__(self, *args, **kwargs)
 
         self.setFixedSize(310, 120)
         self.setWindowTitle("Сортировка пузырьком")
@@ -32,7 +25,6 @@ class MainWindow(QMainWindow):
         self.button = QPushButton("Сортировка!")
         self.button.clicked.connect(self.sorted_array)
         exit_button = ExitButton("Выйти")
-        exit_button.myclicked.connect(self.app.quit)
 
 
         Layout = QVBoxLayout()
@@ -40,11 +32,16 @@ class MainWindow(QMainWindow):
         Layout.addWidget(self.label)
         Layout.addWidget(self.button)
         Layout.addWidget(exit_button)
+        exit_button.clicked.connect(self.activate_exit)
 
         container = QWidget()
         container.setLayout(Layout)
 
         self.setCentralWidget(container)
+
+    @pyqtSlot()
+    def activate_exit(self):
+        self.exit_this.emit(1)
 
     def sorted_array(self):
         self.label.setText(sortfunc(self.input.text()))
